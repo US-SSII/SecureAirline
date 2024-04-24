@@ -59,10 +59,10 @@ HE = setup_pyfhel()
 
 # Realizar pruebas con diferentes tamaños de datos
 print("Pruebas con 1000 conjuntos de datos:")
-perform_tests(HE, 100)
+perform_tests(HE, 1000)
 
 print("\nPruebas con 10000 conjuntos de datos:")
-perform_tests(HE, 100)
+perform_tests(HE, 10000)
 
 print("\nPruebas con 100000 conjuntos de datos:")
-perform_tests(HE, 100)
+perform_tests(HE, 100000)

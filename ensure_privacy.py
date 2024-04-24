@@ -35,10 +35,8 @@ def perform_tests(HE, asked, num=5):
     found = []
 
     for number in asked[:num]:
-        print("Número a buscar:", number)
-        print("Números encontrados:", [decrypt_int(HE, ctxt) for ctxt in data])
-        if any(np.array_equal(number, decrypt_int(HE, ctxt)) for ctxt in data):
-            found.append(decrypt_int(HE, number))
+        if any(number[0] == decrypt_int(HE, ctxt)[0] for ctxt in data):
+            found.append(number)
 
     end_time = time.time()
 
@@ -56,10 +54,10 @@ HE = setup_pyfhel()
 
 # Realizar pruebas con diferentes tamaños de datos
 print("Pruebas con 1000 conjuntos de datos:")
-perform_tests(HE, [np.array([random.randint(0, 100)], dtype=np.int64) for _ in range(100)])
+perform_tests(HE, [np.array([random.randint(0, 100)], dtype=np.int64) for _ in range(1000)])
 
 print("\nPruebas con 10000 conjuntos de datos:")
-perform_tests(HE, [np.array([random.randint(0, 100)], dtype=np.int64) for _ in range(100)])
+perform_tests(HE, [np.array([random.randint(0, 100)], dtype=np.int64) for _ in range(10000)])
 
 print("\nPruebas con 100000 conjuntos de datos:")
 perform_tests(HE, [np.array([random.randint(0, 100)], dtype=np.int64) for _ in range(100000)])
