@@ -25,33 +25,30 @@ def encrypted_addition(HE, ctxt1, ctxt2):
     return ctxt1 + ctxt2
 
 # Función para realizar pruebas de suma con datos cifrados
-def perform_tests(HE, num_tests):
+def perform_tests(HE, asked, num=5):
     total_time = 0
 
-    data = [np.array([random.randint(0, 100)], dtype=np.int64) for _ in range(num_tests)]
-
-    sum = sum([data[i] for i in range(num_tests)])
-
-    zero = np.array([0], dtype=np.int64)
-
-    sum_encrypted = encrypt_int(HE, zero)
+    data = [encrypt_int(HE, number) for number in asked]
 
     start_time = time.time()
 
-    for number in data:
-        ctxt = encrypt_int(HE, number)
-        sum_encrypted = encrypted_addition(HE, sum, ctxt)
+    found = []
+
+    for number in asked[:num]:
+        print("Número a buscar:", number)
+        print("Números encontrados:", [decrypt_int(HE, ctxt) for ctxt in data])
+        if any(np.array_equal(number, decrypt_int(HE, ctxt)) for ctxt in data):
+            found.append(decrypt_int(HE, number))
 
     end_time = time.time()
 
-
-
-    print("Total encriptado = ", decrypt_int(HE, sum_encrypted))
-    print("Total desencriptado = ", sum)
+    print("Cantidad de precios encontrados:", len(found))
 
     total_time += (end_time - start_time)
 
     print("Tiempo total:", total_time, "segundos")
+
+
 
 
 # Configuración de Pyfhel
@@ -59,10 +56,10 @@ HE = setup_pyfhel()
 
 # Realizar pruebas con diferentes tamaños de datos
 print("Pruebas con 1000 conjuntos de datos:")
-perform_tests(HE, 100)
+perform_tests(HE, [np.array([random.randint(0, 100)], dtype=np.int64) for _ in range(100)])
 
 print("\nPruebas con 10000 conjuntos de datos:")
-perform_tests(HE, 100)
+perform_tests(HE, [np.array([random.randint(0, 100)], dtype=np.int64) for _ in range(100)])
 
 print("\nPruebas con 100000 conjuntos de datos:")
-perform_tests(HE, 100)
+perform_tests(HE, [np.array([random.randint(0, 100)], dtype=np.int64) for _ in range(100000)])

@@ -1,0 +1,44 @@
+# Base image
+FROM python:3.11-slim
+
+# Definir directorio de trabajo
+WORKDIR /home/app/webapp
+
+# Evitar la generación de archivos bytecode y desactivar el búfer de salida
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Actualizar pip y setuptools
+RUN pip install --upgrade pip setuptools
+
+# Instalar bibliotecas del sistema necesarias
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libpq-dev \
+    python3-dev \
+    cmake \
+    g++ \
+    git \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    tzdata
+
+# Copiar los archivos de requisitos y código fuente
+COPY ./requirements.txt /home/app/webapp/requirements.txt
+COPY ./ensure_privacy.py /home/app/webapp/ensure_privacy.py
+
+# Install git
+RUN apt-get install -y git
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# start server
+CMD ["python", "ensure_privacy.py"]
+
+# To build -> docker build -t sum_money -f Dockerfile_sum_money .
+# To run -> docker run sum_money
+
+
+
