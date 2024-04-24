@@ -1,3 +1,4 @@
+import random
 import time
 import pandas as pd
 from person import Person
@@ -30,7 +31,7 @@ results = []
 sizes = [100, 500, 1000, 5000, 10000]
 for size in sizes:
     print("Tamaño de entrada:", size)
-    criminals = generate_people_list(size)
+    criminals = generate_people_list(size // random.randint(2, 10))
     suspects = generate_people_list(size)
     execution_time = detect(criminals, suspects)
     results.append((size, execution_time))

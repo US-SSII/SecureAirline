@@ -30,7 +30,7 @@ def perform_tests(HE, num_tests):
 
     data = [np.array([random.randint(0, 100)], dtype=np.int64) for _ in range(num_tests)]
 
-    sum = sum([data[i] for i in range(num_tests)])
+    sum_values = sum([data[i] for i in range(num_tests)])
 
     zero = np.array([0], dtype=np.int64)
 
@@ -40,14 +40,14 @@ def perform_tests(HE, num_tests):
 
     for number in data:
         ctxt = encrypt_int(HE, number)
-        sum_encrypted = encrypted_addition(HE, sum, ctxt)
+        sum_encrypted = encrypted_addition(HE, sum_encrypted, ctxt)
 
     end_time = time.time()
 
 
 
-    print("Total encriptado = ", decrypt_int(HE, sum_encrypted))
-    print("Total desencriptado = ", sum)
+    print("Total encriptado = ", decrypt_int(HE, sum_encrypted)[0])
+    print("Total desencriptado = ", sum_values[0])
 
     total_time += (end_time - start_time)
 
