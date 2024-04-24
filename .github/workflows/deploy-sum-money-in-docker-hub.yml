@@ -1,4 +1,4 @@
-name: Docker Hub sum up Deployment
+name: Docker Hub sum money Deployment
 
 on: [push]
 
@@ -23,4 +23,4 @@ jobs:
           context: .
           file: ./Dockerfile_sum_up
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sum_up:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sum_money:latest
