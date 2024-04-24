@@ -1,5 +1,5 @@
 # base image
-FROM python:3.9-slim
+FROM python:3.1-slim
 
 # setup environment variable
 ENV DockerHOME=/home/app/webapp
@@ -18,12 +18,12 @@ ENV PYTHONUNBUFFERED 1
 RUN pip install --upgrade pip
 
 # Install necessary system libraries
-RUN apt-get update \
-    && apt-get install -y gcc
+RUN apt-get update
 
 # copy whole project to your docker home directory.
 COPY ./requirements.txt $DockerHOME/requirements.txt
-COPY ./sum_money.py $DockerHOME/sum_money.py
+COPY ./detect.py $DockerHOME/detect.py
+COPY ./person.py $DockerHOME/person.py
 
 # run this command to install all dependencies
 RUN pip install --no-cache-dir -r ./requirements.txt

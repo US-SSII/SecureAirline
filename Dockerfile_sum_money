@@ -1,35 +1,44 @@
-# base image
-FROM python:3.9-slim
+# Base image
+FROM python:3.11-slim
 
-# setup environment variable
-ENV DockerHOME=/home/app/webapp
+# Definir directorio de trabajo
+WORKDIR /home/app/webapp
 
-# set work directory
-RUN mkdir -p $DockerHOME
-
-# where your code lives
-WORKDIR $DockerHOME
-
-# set environment variables
+# Evitar la generación de archivos bytecode y desactivar el búfer de salida
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# install dependencies
-RUN pip install --upgrade pip
+# Actualizar pip y setuptools
+RUN pip install --upgrade pip setuptools
 
-# Install necessary system libraries
-RUN apt-get update \
-    && apt-get install -y gcc
+# Instalar bibliotecas del sistema necesarias
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libpq-dev \
+    python3-dev \
+    cmake \
+    g++ \
+    git \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    tzdata
 
-# copy whole project to your docker home directory.
-COPY ./requirements.txt $DockerHOME/requirements.txt
-COPY ./sum_money.py $DockerHOME/sum_money.py
+# Copiar los archivos de requisitos y código fuente
+COPY ./requirements.txt /home/app/webapp/requirements.txt
+COPY ./sum_money.py /home/app/webapp/sum_money.py
 
-# run this command to install all dependencies
-RUN pip install --no-cache-dir -r ./requirements.txt
+# Install git
+RUN apt-get install -y git
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
 # start server
 CMD ["python", "sum_money.py"]
 
 # To build -> docker build -t sum_money -f Dockerfile_sum_money .
 # To run -> docker run sum_money
+
+
+
